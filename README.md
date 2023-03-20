@@ -2,8 +2,13 @@
 
 Environment Sound Classification Inference Service for AI App Store
 
+This uses the BEATS pretrained model developed by Microsoft. 
+
 # Download weights
-Download the weights from Microsoft's official Github [here](https://github.com/microsoft/unilm/tree/master/beats).
+Download any of the finetuned model weights from Microsoft's official Github [here](https://github.com/microsoft/unilm/tree/master/beats). (You do not need the Tokenizer weights)
+
+Create and place the weights in the `models/` folder, and rename the weights file to `AS2M_beats.pt`.
+
 
 ## Build
 To build the docker container, run

@@ -1,11 +1,8 @@
-import os
-import logging
-from typing import Any, List, Optional, Union, Dict, Tuple
+from typing import Any, Union, Dict, Tuple
 
 import torch
 import librosa
 import gradio as gr
-import soundfile as sf
 
 from beats import BEATs, BEATsConfig
 from config import config, BaseConfig
@@ -21,8 +18,8 @@ else:
 MAP_LOCATION: str = torch.device('cuda:{}'.format(DEVICE[0]) if ACCELERATOR == 'gpu' else 'cpu')
 
 ''' Gradio Input/Output Configurations '''
-inputs: Union[str, gr.Audio] = gr.Audio(source='upload', type='filepath')
-outputs: gr.Label = gr.Label(show_label=False)
+inputs: Union[str, gr.inputs.Audio] = gr.inputs.Audio(source='upload', type='filepath')
+outputs: Union[str, gr.outputs.Label] = 'label'
 
 ''' Helper functions '''
 def initialize_esc_model(cfg: BaseConfig) -> Tuple[BEATs, Dict[str, Any]]:
@@ -52,7 +49,7 @@ mapping = load_label_mapping(config)
 ''' Main prediction function '''
 def predict(audio_path: str) -> str:
 
-    arr, sr = librosa.load(audio_path, sr=16000, mono=True)
+    arr, _ = librosa.load(audio_path, sr=16000, mono=True)
     torch_arr = torch.from_numpy(arr)
     torch_arr = torch_arr.unsqueeze(0)
     padding_mask = torch.zeros(torch_arr.shape).bool()
@@ -60,7 +57,8 @@ def predict(audio_path: str) -> str:
     with torch.no_grad():
         probs = esc_model.extract_features(torch_arr, padding_mask=padding_mask)[0]
 
-    top8_label_prob, top8_label_idx = probs.topk(k=8)
-    top8_label = [mapping[esc_label_dict[label_idx.item()]] for label_idx in top8_label_idx[0]]
-    top8_prob = top8_label_prob[0]
-    return {label:prob.item() for label, prob in zip(top8_label, top8_prob)}
+    topk_label_prob, topk_label_idx = probs.topk(k=config.topk)
+    topk_label = [mapping[esc_label_dict[label_idx.item()]] for label_idx in topk_label_idx[0]]
+    topk_prob = topk_label_prob[0]
+
+    return {label:prob.item() for label, prob in zip(topk_label, topk_prob)}

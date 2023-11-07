@@ -1,2 +1,4 @@
 # Put any extra dependencies here
-gradio
+gradio==2.9.4
+pydantic==1.10.13
+librosa==0.10.1

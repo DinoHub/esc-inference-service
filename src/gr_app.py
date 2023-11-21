@@ -1,3 +1,7 @@
+"""
+This file contains code to launch the gradio app.
+"""
+
 import logging
 
 import gradio as gr
@@ -16,10 +20,9 @@ if __name__ == "__main__":
         description="ESC Inference Service for AI App Store",
         examples=config.example_dir
     )
-    
+
     app.launch(
         server_name="0.0.0.0",
         server_port=config.port,
         enable_queue=True
     )
-    

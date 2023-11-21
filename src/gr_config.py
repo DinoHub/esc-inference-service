@@ -1,4 +1,6 @@
-
+"""
+This file contains all of the configurations to run the gradio app.
+"""
 from pydantic import BaseSettings, Field
 
 class BaseConfig(BaseSettings):
@@ -12,7 +14,7 @@ class BaseConfig(BaseSettings):
     esc_model_path: str = 'models/AS2M_beats.pt'
     labels_path: str = 'misc/class_labels_indices.csv'
     topk: int = 10
-    
+
     example_dir: str = 'examples'
 
 

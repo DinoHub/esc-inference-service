@@ -5,7 +5,7 @@ import librosa
 import gradio as gr
 
 from beats import BEATs, BEATsConfig
-from config import config, BaseConfig
+from gr_config import config, BaseConfig
 
 ''' CPU/GPU Configurations '''
 if torch.cuda.is_available():

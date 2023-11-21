@@ -1,8 +1,8 @@
 import logging
 
 import gradio as gr
-from config import BaseConfig
-from predict import inputs, outputs, predict
+from gr_config import BaseConfig
+from gr_predict import inputs, outputs, predict
 
 if __name__ == "__main__":
     logging.basicConfig(format="[%(asctime)s] %(levelname)s: %(message)s")

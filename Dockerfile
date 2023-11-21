@@ -32,4 +32,4 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel && \
 WORKDIR /workspace
 COPY . .
 
-CMD ["python", "src/app.py"]
+CMD ["python", "src/gr_app.py"]

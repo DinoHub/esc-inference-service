@@ -18,11 +18,7 @@ if __name__ == "__main__":
         outputs=outputs,
         title="ESC Inference Service",
         description="ESC Inference Service for AI App Store",
-        examples=config.example_dir
+        examples=config.example_dir,
     )
 
-    app.launch(
-        server_name="0.0.0.0",
-        server_port=config.port,
-        enable_queue=True
-    )
+    app.launch(server_name="0.0.0.0", server_port=config.port, enable_queue=True)

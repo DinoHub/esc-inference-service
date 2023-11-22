@@ -35,7 +35,9 @@ MAP_LOCATION: str = torch.device(f"cuda:{DEVICE[0]}" if ACCELERATOR == "gpu" els
 
 class CustomAudioDataset(Dataset):
     """
-    Custom audio dataset that takes in a manifest file as input.
+    Custom audio dataset that takes in a list of manifest items as input.
+    List should look like this:
+    [{"audio_filepath": "rel/path/to/audio.wav"}, ...]
     """
 
     def __init__(self, data_dir: str, manifest_list: List[Dict[str, str]]):
@@ -67,22 +69,6 @@ def custom_collate_fn(tensor_batch: List[torch.Tensor]):
     within a batch, pad sequences to the batch's max length
     """
     return pad_sequence(tensor_batch, batch_first=True)
-
-
-def name2label(cfg: BaseConfig) -> Dict[str, int]:
-    """
-    loads the mapping from the labels file
-
-    output:
-    {"Pant": /m/07pyy8b, ...}
-
-    """
-
-    with open(cfg.labels_path, mode="r", encoding="utf-8") as f:
-        lines = f.readlines()
-    items = [line.split(",") for line in lines[1:]]
-
-    return {x[2].strip("\r\n").replace('"', ""): x[1] for x in items}
 
 
 def get_mappers(cfg: BaseConfig) -> Tuple[Dict[str, str]]:
@@ -186,4 +172,4 @@ if __name__ == "__main__":
     with open(config.output_path, mode="w", encoding="utf-8") as fw:
         for entry, output in zip(entries, outputs):
             entry["output"] = output
-            fw.write(json.dumps(entry))
+            fw.write(json.dumps(entry)+"\n")

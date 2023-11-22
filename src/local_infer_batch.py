@@ -148,7 +148,7 @@ if __name__ == "__main__":
                 for target_name, target_idx in zip(
                     config.target_classes, target_indices
                 ):
-                    output[target_name] = prob[target_indices].item()
+                    output[target_name] = prob[target_idx].item()
 
                 outputs.append(output)
 
